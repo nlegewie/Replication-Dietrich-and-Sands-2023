@@ -371,9 +371,9 @@ plot_corridor_samples <- function(nested_data, n_samples = 4) {
     theme(legend.box = "horizontal")  # Arrange legends horizontally
 
   # Save plot
-  ggsave("3DSR output_Corridor plausibility check.pdf",
+  ggsave("Replication_DS_corridor check sample.pdf",
          plot = combined_plot,
-         path = path_output,
+         path = path_output_figures,
          device = cairo_pdf,
          width = 18,
          height = 15)
@@ -832,75 +832,6 @@ extract_regression_results <- function(data) {
     ))
 }
 
-###*********************************###
-##### PLOT ESTIMATE DISTRIBUTIONS #####
-###*********************************###
-
-#' @description Creates density plots showing the distribution of treatment effect
-#' estimates across different model specifications and treatments
-#'
-#' @param results Dataframe containing regression results from multiple sub-samples
-#' @return ggplot object showing:
-#'   - Density plots for each treatment effect
-#'   - Faceted by model specification
-#'   - Vertical line at zero
-#'   - Legend showing treatments
-#' @details
-#'   - Creates separate panels for:
-#'     * Clustered SE ATE
-#'     * Clustered SE CTE
-#'     * Wild Bootstrap ATE
-#'     * Wild Bootstrap CTE
-#'   - Saves plot as PDF in output directory
-
-plot_estimate_distributions <- function(results) {
-  # Prepare data for plotting
-  plot_data <- results %>%
-    select(sample_no, ends_with("_stats")) %>%
-    # Unnest all stats
-    unnest(cols = ends_with("_stats")) %>%
-    # Keep only rows we want to plot
-    filter(term %in% c("muslim garb", "muslim no garb")) %>%
-    # Create method column for faceting
-    mutate(
-      method = case_when(
-        .data[[cur_column()]] == ate_no_cov_stats ~ "Standard OLS\nATE",
-        .data[[cur_column()]] == ate_with_cov_stats ~ "Standard OLS\nCTE",
-        .data[[cur_column()]] == ate_wild_no_cov_stats ~ "Wild Bootstrap\nATE",
-        .data[[cur_column()]] == ate_wild_with_cov_stats ~ "Wild Bootstrap\nCTE"
-      )
-    )
-
-  # Create plot
-  p <- ggplot(plot_data, aes(x = estimate, fill = term)) +
-    geom_density(alpha = 0.5) +
-    facet_wrap(~method, scales = "free") +
-    geom_vline(xintercept = 0, linetype = "dashed", color = "gray50") +
-    labs(
-      title = "Distribution of Treatment Effect Estimates",
-      x = "Estimate",
-      y = "Density",
-      fill = "Treatment"
-    ) +
-    theme(
-      text = element_text(size = 12),
-      plot.title = element_text(hjust = 0.5),
-      legend.position = "bottom"
-    )
-
-  # Save plot
-  ggsave(
-    "3DSR output_estimate_distributions.pdf",
-    plot = p,
-    path = path_output,
-    device = cairo_pdf,
-    width = 12,
-    height = 8
-  )
-
-  return(p)
-}
-
 
 ###********************************###
 ##### CREATE SPECIFICATION CURVE #####
@@ -969,11 +900,4 @@ create_specification_curve <- function(data) {
       subtitle = subtitle
     )
 
-ggsave(
-  filename = glue("3DSR output_regressions_specification_curve_{subtitle}.pdf"),
-  path = path_output,
-  device = cairo_pdf,
-  width = 25,
-  height = 12
-)
 }

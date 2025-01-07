@@ -71,7 +71,7 @@ subsamples_df <- read_rds(file.path(path_input, "3DSR_racial_avoidance_subsample
 ###************###
 
 ###******************###
-##### GGPLOT THEME #####
+##### ggplot theme #####
 ###******************###
 
 fresh_palette <- c(
@@ -108,7 +108,7 @@ scale_fill_discrete <- function(...) scale_fill_manual(values = fresh_palette)
 
 
 ###*********************###
-##### FLEXTABLE THEME #####
+##### flextable theme #####
 ###*********************###
 
 set_flextable_defaults(
@@ -262,7 +262,7 @@ results_commercial <- subsamples_df %>%
 ###********************************###
 
 #' @description Extracts and summarizes degrees of freedom from different model
-#' specifications and location types
+#' specifications and location types. Table is not included in main report, but information is used to compile table 2
 #'
 #' @details
 #'   - Creates summary for residential and commercial areas
@@ -345,7 +345,8 @@ extracted_results_commercial <- extract_regression_results(results_commercial)
 ##### Plot results #####
 ###******************###
 
-#' @description Generates specification curve plots for each location subset
+#' @description Generates specification curve plots for each location subset.
+#' Produces figures 2, 3A, 3B, A.1A, A.1B, and A.1C
 #'
 #' @details
 #'   - Uses create_specification_curve() from 3DSR_racial_avoidance_utils.R
@@ -359,12 +360,82 @@ extracted_results_commercial <- extract_regression_results(results_commercial)
 #'     * Points/intervals colored by significance
 #'   - Saves each plot as separate PDF
 
+##### Figure 2: All locations #####
+
 create_specification_curve(extracted_results_all_locations)
-create_specification_curve(extracted_results_neue_bahnhofstrasse)
-create_specification_curve(extracted_results_frankfurter_allee)
-create_specification_curve(extracted_results_guertelstrasse)
+
+ggsave(
+  filename = glue("Replication_DS_figure 2.pdf"),
+  path = path_output_figures,
+  device = cairo_pdf,
+  width = 25,
+  height = 12
+)
+
+
+##### Figure 3A: Residential area #####
+
 create_specification_curve(extracted_results_residential)
+
+ggsave(
+  filename = glue("Replication_DS_figure 3A.pdf"),
+  path = path_output_figures,
+  device = cairo_pdf,
+  width = 25,
+  height = 12
+)
+
+
+##### Figure 3B: Commercial area #####
+
 create_specification_curve(extracted_results_commercial)
+
+ggsave(
+  filename = glue("Replication_DS_figure 3B.pdf"),
+  path = path_output_figures,
+  device = cairo_pdf,
+  width = 25,
+  height = 12
+)
+
+
+##### Figure A.1A: Frankfurter Allee #####
+
+create_specification_curve(extracted_results_frankfurter_allee)
+
+ggsave(
+  filename = glue("Replication_DS_figure A.1A.pdf"),
+  path = path_output_figures,
+  device = cairo_pdf,
+  width = 25,
+  height = 12
+)
+
+
+##### Figure A.1B: Gürtelstraße #####
+
+create_specification_curve(extracted_results_guertelstrasse)
+
+ggsave(
+  filename = glue("Replication_DS_figure A.1B.pdf"),
+  path = path_output_figures,
+  device = cairo_pdf,
+  width = 25,
+  height = 12
+)
+
+
+##### Figure A.1C: Neue Bahnhofstrasse #####
+
+create_specification_curve(extracted_results_neue_bahnhofstrasse)
+
+ggsave(
+  filename = glue("Replication_DS_figure A.1C.pdf"),
+  path = path_output_figures,
+  device = cairo_pdf,
+  width = 25,
+  height = 12
+)
 
 
 ###*****************************************###
@@ -420,7 +491,8 @@ results_summary <- tibble(
     ))) %>%
   select(location, results)
 
-# Table: All locations and area types
+##### Table 3: All locations and area types #####
+
 results_summary %>%
   filter(location %in% c("All Locations", "Residential", "Commercial")) %>%
   unnest(results) %>%
@@ -458,9 +530,10 @@ results_summary %>%
   ) %>%
   bold(part = "header") %>%
   autofit() %>%
-  save_as_docx(path = file.path(path_output_tables, "model_summary_stats_by_area.docx"))
+  save_as_docx(path = file.path(path_output_tables, "Replication_DS_table 3.docx"))
 
-# Table: All locations and specific locations
+##### Table A1: All locations and specific locations #####
+
 results_summary %>%
   filter(location %in% c("All Locations", "Frankfurter Allee", "Gürtelstraße", "Neue Bahnhofstraße")) %>%
   unnest(results) %>%
@@ -498,4 +571,4 @@ results_summary %>%
   ) %>%
   bold(part = "header") %>%
   autofit() %>%
-  save_as_docx(path = file.path(path_output_tables, "model_summary_stats_by_location.docx"))
+  save_as_docx(path = file.path(path_output_tables, "Replication_DS_table A1.docx"))

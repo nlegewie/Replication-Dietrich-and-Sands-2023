@@ -65,6 +65,7 @@ Results are saved in the `outputs/figures` and `outputs/tables` directories.
    source("scripts/3DSR_racial_avoidance_data processing.R")
    source("scripts/3DSR_racial_avoidance_analysis.R")
    ```
+3. If you want to test the pipeline without the existing processed data and outputs, you can delete the contents of the `data/processed/`, `outputs/figures/`, and `outputs/tables/` directories.
 
 
 ## Citation

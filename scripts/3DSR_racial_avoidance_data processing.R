@@ -22,7 +22,9 @@ pacman::p_load(
   readxl,
   sp,
   conflicted,
-  patchwork
+  patchwork,
+  ggthemr,
+  flextable
 )
 
 ###***************###
@@ -52,6 +54,60 @@ path_input <- here("data", "raw")
 path_output_data <- here("data", "processed")
 path_output_figures <- here("outputs", "figures")
 path_output_tables <- here("outputs", "tables")
+
+
+###************###
+##### THEMES #####
+###************###
+
+###******************###
+##### ggplot theme #####
+###******************###
+
+fresh_palette <- c(
+  "#72B5A4", # Green
+  "#C1D7A3", # Light green
+  "#F5A25D", # Orange
+  "#FF4D4F", # Red
+  "#FF79C6", # Pink
+  "#6A5ACD", # Violet
+  "#BF9DDA", # Lavender
+  "#85B8D6", # Light blue
+  "#58A3CB", # Blue
+  "#000000", # Black
+  "#FFDA79", # Yellow
+  "#FFA07A"  # Coral
+)
+
+# Set ggthemr theme
+ggthemr("fresh")
+
+# Get the current theme settings from ggthemr
+current_theme <- ggplot2::theme_get()
+
+# Modify the theme to include custom text elements
+modified_theme <- current_theme +
+  theme(text = element_text(size = 15, family = "Montserrat"))
+
+# Set the modified theme as the default
+ggplot2::theme_set(modified_theme)
+
+# Set the global discrete color and fill scales
+scale_colour_discrete <- function(...) scale_colour_manual(values = fresh_palette)
+scale_fill_discrete <- function(...) scale_fill_manual(values = fresh_palette)
+
+
+###*********************###
+##### flextable theme #####
+###*********************###
+
+set_flextable_defaults(
+  font.family = "Montserrat",
+  font.size = 10,
+  border.color = "gray",
+  big.mark = "",
+  padding = 6
+)
 
 
 ###******************###
@@ -130,7 +186,7 @@ nested_dfs_location <- nested_dfs_names_cleaned %>%
 #'   - Reads in experimental condition data from Excel file
 #'   - Selects relevant columns: df_name, exp_condition, block_position, block_id, sub_block_id
 
-condition_data <- read_excel(glue("{path_input}metacsv.xlsx")) %>%
+condition_data <- read_excel(glue("{path_input}/metadata.xlsx")) %>%
   select(df_name = CSV_Name, exp_condition = Experimental_Condition, block_position, block_id, sub_block_id)
 
 
@@ -318,7 +374,7 @@ nested_dfs_check_corridor <- nested_dfs_in_corridor %>%
 ##### VISUAL CHECK OF CORRIDOR #####
 ###******************************###
 
-#' @description Creates plots for visual inspection of corridor analysis
+#' @description Creates plots for visual inspection of corridor analysis. Produced figure is not included in main report.
 #'
 #' @details
 #'   - Uses plot_corridor_check() and plot_corridor_samples() from 3DSR_racial_avoidance_utils.R
@@ -340,7 +396,7 @@ plot_corridor_samples(nested_dfs_check_corridor)
 ##### CORRIDOR EXAMPLE #####
 ###**********************###
 
-#' @description Generates and saves a visualization an example of the corridor analysis approach.
+#' @description Generates and saves a visualization an example of the corridor analysis approach. Produces figure 1.
 #'
 #' @details
 #'   - Uses plot_corridor_check() from 3DSR_racial_avoidance_utils.R
@@ -356,14 +412,14 @@ plot_corridor_samples(nested_dfs_check_corridor)
 plot_corridor_check("20240610_093009_0_839_1.csv") +
   labs(title = "")
 
-ggsave("3DSR output_corridor_example.pdf",
+ggsave("Replication_DS_figure 1.pdf",
   path = path_output_figures,
   device = cairo_pdf,
   width = 6,
   height = 8
 )
 
-ggsave("3DSR output_corridor_example.png",
+ggsave("Replication_DS_figure 1.png",
        path = path_output_figures,
        width = 6,
        height = 8)
@@ -472,7 +528,7 @@ subsamples_df <- tibble(sample_no = 1:50, data = map(1:50, ~ nested_dfs_corridor
 #'   - Creates formatted flextable
 #'   - Saves as Word document
 
-subsamples_df %>%
+nested_dfs_corridor_distance %>%
   group_by(exp_condition) %>%
   summarise(n = n()) %>%
   mutate(
@@ -501,7 +557,7 @@ subsamples_df %>%
 #' @description Generates and saves a table showing the number of observations
 #' in each experimental condition and block
 
-subsamples_df %>%
+nested_dfs_corridor_distance %>%
   group_by(exp_condition, block_id) %>%
   summarise(n = n()) %>%
   mutate(
@@ -531,7 +587,7 @@ subsamples_df %>%
 #' @description Generates and saves a table showing the number of observations
 #' in each location
 
-subsamples_df %>%
+nested_dfs_corridor_distance %>%
   group_by(location) %>%
   summarise(n = n()) %>%
   flextable() %>%
