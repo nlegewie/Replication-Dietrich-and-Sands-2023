@@ -43,7 +43,7 @@ conflict_prefer("slice", "dplyr")
 ##### SOURCE HELPER FUNCTIONS #####
 ###*****************************###
 
-source(here("scripts", "3DSR_racial_avoidance_utils.R"))
+source(here("scripts", "Replications_DS_utils.R"))
 
 
 ###*********************###
@@ -607,6 +607,6 @@ nested_dfs_corridor_distance %>%
 
 #' @description Saves to RDS containing processed data
 
-write_rds(subsamples_df, file.path(path_output_data, "3DSR_racial_avoidance_subsamples.rds"))
+write_rds(subsamples_df, file.path(path_output_data, "Replications_DS_subsamples.rds"))
 
 

@@ -2,7 +2,7 @@
 
 ## Authors
 
-Nicolas Legewie, University of Erfurt  
+Nicolas Legewie, University of Erfurt (corresponding author)  
 Doron Shiffer-Sebba, Northwestern University  
 Jannes Jacobsen, DeZIM Institute  
 Yoav Goldstein, Independent Researcher  
@@ -44,7 +44,11 @@ Note: Package versions listed are the ones used in development. The code should 
 ### Input Data Requirements
 The `data/raw/` directory should contain:
 1. CSV files with trajectory data (format: `YYYYMMDD_HHMMSS_*.csv`)
-2. `metacsv.xlsx` containing experimental conditions and block information
+2. `metadata.xlsx` containing experimental conditions and block information
+
+## Utilities
+
+The `scripts/Replications_DS_utils.R` script contains all utility functions for data processing and analysis.
 
 ## Data Processing
 The data processing script (`3DSR_racial_avoidance_data processing.R`):
@@ -54,7 +58,7 @@ The data processing script (`3DSR_racial_avoidance_data processing.R`):
 4. Generates validation plots
 5. Creates random subsamples for analysis
 
-The processed data (`3DSR_racial_avoidance_subsamples.rds`) contains:
+The processed data (`Replications_DS_subsamples.rds`) contains:
 - Minimum distances between participants and confederates
 - Location information
 - Experimental conditions

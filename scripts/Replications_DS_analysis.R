@@ -46,7 +46,7 @@ conflict_prefer("slice", "dplyr")
 ##### SOURCE HELPER FUNCTIONS #####
 ###*****************************###
 
-source(here("scripts", "3DSR_racial_avoidance_utils.R"))
+source(here("scripts", "Replications_DS_utils.R"))
 
 
 ###*********************###
@@ -62,7 +62,7 @@ path_output_tables <- here("outputs", "tables")
 ##### LOAD DATA #####
 ###***************###
 
-subsamples_df <- read_rds(file.path(path_input, "3DSR_racial_avoidance_subsamples.rds"))
+subsamples_df <- read_rds(file.path(path_input, "Replications_DS_subsamples.rds"))
 
 
 ###************###
