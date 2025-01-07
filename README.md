@@ -11,7 +11,7 @@ Jörg Dollmann, DeZIM Institute and Mannheim Centre for European Social Research
 
 ## Purpose
 
-This repository contains the code for the replication of Dietrich and Sands (2023) using data from a new context and new data collection technique (3DSR, see [Goldstein et al., 2023](https://doi.org/10.1177/00491241221147)), using 3D videos and computer vision models to estimate the effect of minoritized bystanders on pedestrian distance in Berlin, Germany.
+This repository contains the code for the replication of Dietrich and Sands (2023) using data from a new context and new data collection technique (3DSR, see [Goldstein et al., 2023](https://doi.org/10.1177/00491241221147495)), using 3D videos and computer vision models to estimate the effect of minoritized bystanders on pedestrian distance in Berlin, Germany.
 
 
 ## Abstract
@@ -48,7 +48,7 @@ The `data/raw/` directory should contain:
 
 ## Utilities
 
-The `scripts/Replications_DS_utils.R` script contains all utility functions for data processing and analysis.
+The `scripts/Replications_DS_utils.R` script contains all utility functions for data processing and analysis. It will be sourced in the data processing and analysis scripts.
 
 ## Data Processing
 The data processing script (`3DSR_racial_avoidance_data processing.R`):
@@ -89,7 +89,7 @@ Results are saved in the `outputs/figures` and `outputs/tables` directories.
 
 ## Citation
 
-[Add paper citation when available]
+A link to the report will be added here when available.
 
 ## Contact
 
