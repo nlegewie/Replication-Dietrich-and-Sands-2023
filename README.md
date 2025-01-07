@@ -44,7 +44,7 @@ Note: Package versions listed are the ones used in development. The code should 
 ### Input Data Requirements
 The `data/raw/` directory should contain:
 1. CSV files with trajectory data (format: `YYYYMMDD_HHMMSS_*.csv`)
-2. `metadata.xlsx` containing experimental conditions and block information
+2. `Replications_DS_metadata.xlsx` containing experimental conditions and block information
 
 ## Utilities
 

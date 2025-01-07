@@ -186,7 +186,7 @@ nested_dfs_location <- nested_dfs_names_cleaned %>%
 #'   - Reads in experimental condition data from Excel file
 #'   - Selects relevant columns: df_name, exp_condition, block_position, block_id, sub_block_id
 
-condition_data <- read_excel(glue("{path_input}/metadata.xlsx")) %>%
+condition_data <- read_excel(glue("{path_input}/Replications_DS_metadata.xlsx")) %>%
   select(df_name = CSV_Name, exp_condition = Experimental_Condition, block_position, block_id, sub_block_id)
 
 
