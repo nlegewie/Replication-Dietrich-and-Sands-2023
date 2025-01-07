@@ -2,11 +2,11 @@
 
 ## Authors
 
-Nicolas Legewie, University of Erfurt
-Doron Shiffer-Sebba, Northwestern University
-Jannes Jacobsen, DeZIM Institute
-Yoav Goldstein, Independent Researcher
-Jörg Dollmann, DeZIM Institute and Mannheim Centre for European Social Research (MZES)
+Nicolas Legewie, University of Erfurt  
+Doron Shiffer-Sebba, Northwestern University  
+Jannes Jacobsen, DeZIM Institute  
+Yoav Goldstein, Independent Researcher  
+Jörg Dollmann, DeZIM Institute and Mannheim Centre for European Social Research (MZES)  
 
 
 ## Purpose
@@ -22,7 +22,22 @@ Dietrich and Sands (2023) used New York City traffic camera footage to experimen
 ## Requirements
 
 - R version [4.4.2 (2024-10-31)]
-- Required packages are installed automatically using `pacman`
+- Required packages (installed automatically via `pacman`):
+  - `here` [1.0.1] - Project path management
+  - `glue` [1.7.0] - String interpolation
+  - `tidyverse` [2.0.0] - Data manipulation and visualization
+  - `readxl` [1.4.3] - Excel file reading
+  - `sp` [2.1-2] - Spatial data handling
+  - `conflicted` [1.2.0] - Conflict resolution
+  - `patchwork` [1.2.0] - Plot composition
+  - `ggthemr` [1.1.0] - ggplot themes
+  - `flextable` [0.9.4] - Table formatting
+  - `broom` [1.0.5] - Model tidying
+  - `sandwich` [3.1-0] - Robust standard errors
+  - `lmtest` [0.9-40] - Testing linear regression models
+  - `multiwayvcov` [1.2.3] - Multi-way clustering
+
+Note: Package versions listed are the ones used in development. The code should work with newer versions as well.
 
 ## Data
 

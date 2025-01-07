@@ -26,7 +26,6 @@ pacman::p_load(
   sandwich,
   lmtest,
   conflicted,
-  kableExtra,
   flextable,
   multiwayvcov
 )
