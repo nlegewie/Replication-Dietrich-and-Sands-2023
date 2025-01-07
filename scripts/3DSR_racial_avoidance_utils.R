@@ -75,10 +75,6 @@ calculate_perpendicular_line <- function(lm_obj, conf_coords) {
 ##### Calculate corridor corners #####
 ###*********************************###
 
-# TODO: Whichever hard coded values are used we should loop +/- 2
-
-#' Calculate corners of analysis corridor
-#'
 #' @description Defines a rectangular corridor centered on the perpendicular line
 #' with specified width
 #'

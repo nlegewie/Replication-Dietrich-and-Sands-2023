@@ -6,10 +6,6 @@
 ###*******************************************###
 ###*******************************************###
 
-# TODO: Figure with 1 corridor check, confederates and participants in different colors
-# TODO: Table: how many obs in each condition?
-
-
 ###******************************###
 ##### ***SET UP WORK SPACE *** #####
 ###******************************###
@@ -20,6 +16,7 @@
 
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
+  here,
   glue,
   ggthemr,
   tidyverse,
@@ -50,20 +47,21 @@ conflict_prefer("slice", "dplyr")
 ##### SOURCE HELPER FUNCTIONS #####
 ###*****************************###
 
-source(file.path(getwd(), "src", "3DSR_racial_avoidance_utils.R"))
+source(here("scripts", "3DSR_racial_avoidance_utils.R"))
 
 
 ###*********************###
 ##### PATHS & OUTPUTS #####
 ###*********************###
 
-path_input <- file.path(getwd(), "input/")
-path_output <- file.path(getwd(), "output/")
+path_input <- here("data", "processed")
+path_output_figures <- here("outputs", "figures")
+path_output_tables <- here("outputs", "tables")
 
 
-###*************** ###
+###***************###
 ##### LOAD DATA #####
-###*************** ###
+###***************###
 
 subsamples_df <- read_rds(file.path(path_input, "3DSR_racial_avoidance_subsamples.rds"))
 
@@ -149,26 +147,10 @@ wrap_plots(dist_plots, ncol = 5)
 
   # Save with appropriate filename
 ggsave("3DSR output_distance_distribution.pdf",
-       path = path_output,
+       path = path_output_figures,
        device = cairo_pdf,
        width = 16,
        height = 30)
-
-
-###***********************###
-##### IDENTIFY OUTLIERS #####
-###***********************###
-
-#' @description Identifies outliers in minimum distances for each subsample
-#'
-#' @details
-#'   - Uses identify_outliers() from 3DSR_racial_avoidance_utils.R
-#'   - For each subsample:
-#'     * Applies 1.5 * IQR rule for regular outliers
-#'     * Applies 3 * IQR rule for strong outliers
-#'     * Returns dataframe of outlier observations
-
-outliers <- map(subsamples_df$data, identify_outliers)
 
 
 ###******************###
@@ -178,8 +160,6 @@ outliers <- map(subsamples_df$data, identify_outliers)
 ###****************###
 ##### Fit models #####
 ###****************###
-
-# TODO: Iterate over versions of data, rather than repeating the calls
 
 #' @description Estimates treatment effects using multiple model specifications
 #' for different geographic subsets of the data
@@ -216,9 +196,9 @@ results_all_locations <- subsamples_df %>%
          ate_wild_with_cov = map(data, ~ perform_ate_analysis_wild_block_bootstrap(., include_covariates = TRUE)))
 
 
-###*******************###
+###*************************###
 ##### Neue Bahnhofstrasse #####
-###*******************###
+###*************************###
 
 results_neue_bahnhofstrasse <- subsamples_df %>%
   mutate(data = map(data, ~ filter(., location == "Neue Bahnhofstraße"))) %>%
@@ -228,9 +208,9 @@ results_neue_bahnhofstrasse <- subsamples_df %>%
          ate_wild_with_cov = map(data, ~ perform_ate_analysis_wild_block_bootstrap(., include_covariates = TRUE)))
 
 
-###*******************###
+###***********************###
 ##### Frankfurter Allee #####
-###*******************###
+###***********************###
 
 results_frankfurter_allee <- subsamples_df %>%
   mutate(data = map(data, ~ filter(., location == "Frankfurter Allee"))) %>%
@@ -240,9 +220,9 @@ results_frankfurter_allee <- subsamples_df %>%
          ate_wild_with_cov = map(data, ~ perform_ate_analysis_wild_block_bootstrap(., include_covariates = TRUE)))
 
 
-###*******************###
+###******************###
 ##### Gürtelstraße #####
-###*******************###
+###******************###
 
 results_guertelstrasse <- subsamples_df %>%
   mutate(data = map(data, ~ filter(., location == "Gürtelstraße"))) %>%
@@ -252,9 +232,9 @@ results_guertelstrasse <- subsamples_df %>%
          ate_wild_with_cov = map(data, ~ perform_ate_analysis_wild_block_bootstrap(., include_covariates = TRUE)))
 
 
-###*********************###
+###**********************###
 ##### Residential area #####
-###*********************###
+###**********************###
 
 results_residential <- subsamples_df %>%
   mutate(data = map(data, ~ filter(., location_type == "Residential"))) %>%
@@ -365,63 +345,6 @@ extracted_results_commercial <- extract_regression_results(results_commercial)
 ##### Plot results #####
 ###******************###
 
-##### Dot-and-whisker plot #####
-
-#' @description Generates plot showing treatment effect estimates and confidence
-#' intervals across all subsamples
-#'
-#' @details
-#'   - Creates plot with:
-#'     * Points showing effect estimates
-#'     * Thick lines for 90% CI
-#'     * Thin lines for 95% CI
-#'     * Points/lines colored by p-value
-#'     * Vertical reference line at zero
-#'   - Faceted by treatment term and model type
-#'   - Saves as PDF
-
-extracted_results_all_locations %>%
-  mutate(
-    sample_no = factor(sample_no),
-    grey_scale = pmin(as.numeric(p.value) * 2, 0.9)
-  ) %>%
-  ggplot(aes(x = estimate, y = sample_no, color = grey_scale)) +
-  geom_vline(xintercept = 0, color = "grey80", linetype = 2, linewidth = 1.5) +
-  geom_linerange(aes(xmin = lower_90, xmax = upper_90),
-    linewidth = 1.5
-  ) +
-  geom_linerange(aes(xmin = lower_95, xmax = upper_95),
-    linewidth = 0.75
-  ) +
-  geom_point(size = 3) +
-  facet_grid(term ~ model) +
-  scale_color_gradient(
-    low = "black",
-    high = "grey80",
-    guide = guide_colorbar(title = "p-value")
-  ) +
-  theme(
-    text = element_text(size = 20),
-    axis.text.y = element_text(size = 8),
-    panel.spacing = unit(2, "lines")
-  ) +
-  labs(
-    x = "Standardized Treatment Effect on Distance",
-    y = "Sample Number",
-    title = "Treatment Effects Across Subsamples"
-  )
-
-ggsave(
-    "3DSR output_regressions_dot_and_whisker.pdf",
-    path = path_output,
-    device = cairo_pdf,
-    width = 20,
-    height = 30
-  )
-
-
-##### Specification curve #####
-
 #' @description Generates specification curve plots for each location subset
 #'
 #' @details
@@ -442,28 +365,6 @@ create_specification_curve(extracted_results_frankfurter_allee)
 create_specification_curve(extracted_results_guertelstrasse)
 create_specification_curve(extracted_results_residential)
 create_specification_curve(extracted_results_commercial)
-
-
-###*********************###
-##### Point estimates #####
-###*********************###
-
-##### ATE #####
-
-range(extracted_results_all_locations$estimate[extracted_results_all_locations$model == "Wild Bootstrap (ATE)" & extracted_results_all_locations$term == "muslim garb"])
-
-extracted_results_all_locations %>%
-  filter(model == "Wild Bootstrap (ATE)", term == "muslim garb") %>%
-  summarize(mean_estimate = mean(estimate))
-
-
-##### CTE #####
-
-range(extracted_results_all_locations$estimate[extracted_results_all_locations$model == "Wild Bootstrap (With Covariates)" & extracted_results_all_locations$term == "muslim garb"])
-
-extracted_results_all_locations %>%
-  filter(model == "Wild Bootstrap (With Covariates)", term == "muslim garb") %>%
-  summarize(mean_estimate = mean(estimate))
 
 
 ###*****************************************###
@@ -557,7 +458,7 @@ results_summary %>%
   ) %>%
   bold(part = "header") %>%
   autofit() %>%
-  save_as_docx(path = file.path(path_output, "model_summary_stats_by_area.docx"))
+  save_as_docx(path = file.path(path_output_tables, "model_summary_stats_by_area.docx"))
 
 # Table: All locations and specific locations
 results_summary %>%
@@ -597,4 +498,4 @@ results_summary %>%
   ) %>%
   bold(part = "header") %>%
   autofit() %>%
-  save_as_docx(path = file.path(path_output, "model_summary_stats_by_location.docx"))
+  save_as_docx(path = file.path(path_output_tables, "model_summary_stats_by_location.docx"))

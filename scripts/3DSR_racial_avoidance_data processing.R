@@ -6,13 +6,6 @@
 ###**************************************************###
 ###**************************************************###
 
-# TODO:
-### Do scatter plots with experimental condition marked in color
-### See if results by neighborhood make sense to plot
-### Do plot with average/median distance marked, and number of people above
-# below plotted, by experimental condition
-
-
 ###******************************###
 ##### ***SET UP WORK SPACE *** #####
 ###******************************###
@@ -23,6 +16,7 @@
 
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
+  here,
   glue,
   tidyverse,
   readxl,
@@ -47,15 +41,17 @@ conflict_prefer("slice", "dplyr")
 ##### SOURCE HELPER FUNCTIONS #####
 ###*****************************###
 
-source(file.path(getwd(), "src", "3DSR_racial_avoidance_utils.R"))
+source(here("scripts", "3DSR_racial_avoidance_utils.R"))
 
 
 ###*********************###
 ##### PATHS & OUTPUTS #####
 ###*********************###
 
-path_input <- file.path(getwd(), "input/")
-path_output <- file.path(getwd(), "output/")
+path_input <- here("data", "raw")
+path_output_data <- here("data", "processed")
+path_output_figures <- here("outputs", "figures")
+path_output_tables <- here("outputs", "tables")
 
 
 ###******************###
@@ -159,9 +155,6 @@ nested_dfs_time <- nested_dfs_condition %>%
 ###***************************###
 ##### ***CREATE CORRIDOR*** #####
 ###***************************###
-
-# TODO: Check what's happening with NAs (n = 24)
-# TODO: Try cone corridor approach
 
 #' @description First step of the main processing pipeline that:
 #' 1. Splits data into participants and confederates
@@ -364,14 +357,14 @@ plot_corridor_check("20240610_093009_0_839_1.csv") +
   labs(title = "")
 
 ggsave("3DSR output_corridor_example.pdf",
-  path = path_output,
+  path = path_output_figures,
   device = cairo_pdf,
   width = 6,
   height = 8
 )
 
 ggsave("3DSR output_corridor_example.png",
-       path = path_output,
+       path = path_output_figures,
        width = 6,
        height = 8)
 
@@ -498,7 +491,7 @@ subsamples_df %>%
   ) %>%
   autofit() %>%
   bold(part = "header") %>%
-  save_as_docx(path = file.path(path_output, "condition_n.docx"))
+  save_as_docx(path = file.path(path_output_tables, "condition_n.docx"))
 
 
 ###*****************************************###
@@ -528,7 +521,7 @@ subsamples_df %>%
   ) %>%
   autofit() %>%
   bold(part = "header") %>%
-  save_as_docx(path = file.path(path_output, "condition_block_n.docx"))
+  save_as_docx(path = file.path(path_output_tables, "condition_block_n.docx"))
 
 
 ###*****************###
@@ -549,7 +542,7 @@ subsamples_df %>%
   ) %>%
   autofit() %>%
   bold(part = "header") %>%
-  save_as_docx(path = file.path(path_output, "location_n.docx"))
+  save_as_docx(path = file.path(path_output_tables, "location_n.docx"))
 
 
 ###*********************###
@@ -558,6 +551,6 @@ subsamples_df %>%
 
 #' @description Saves to RDS containing processed data
 
-write_rds(subsamples_df, file.path(path_input, "3DSR_racial_avoidance_subsamples.rds"))
+write_rds(subsamples_df, file.path(path_output_data, "3DSR_racial_avoidance_subsamples.rds"))
 
 
