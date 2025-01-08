@@ -135,7 +135,7 @@ nested_dfs <- tibble(df_name = file_list,
 
 nested_dfs_names_cleaned <- nested_dfs %>%
   mutate(df_name = basename(df_name)) %>%
-  mutate(df_name = str_remove(df_name, "_centered_marked.csv"))
+  mutate(df_name = str_remove(df_name, "_centered_marked"))
 
 
 ###*************************###
