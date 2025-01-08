@@ -89,7 +89,9 @@ Results are saved in the `outputs/figures` and `outputs/tables` directories.
 
 ## Citation
 
-A link to the report will be added here when available.
+Dietrich, S. and Sands, D. (2023). Seeing racial avoidance on New York City streets. *Nature Human Behaviour*, 7, 1275-1281. doi: https://doi.org/10.1038/s41562-023-01589-7
+
+A link to our replication report will be added here when available.
 
 ## Contact
 
