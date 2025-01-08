@@ -1,10 +1,10 @@
 
 
-###********************************************###
-###********************************************###
-##### ***3DSR RACIAL AVOIDANCE: UTILITIES*** #####
-###********************************************###
-###********************************************###
+###*************************************###
+###*************************************###
+##### ***REPLICATION DS: UTILITIES*** #####
+###*************************************###
+###*************************************###
 
 ###****************************###
 ##### ***DATA PROCESSING*** ######
@@ -261,7 +261,7 @@ plot_corridor_check <- function(df_name) {
         x = "",
         y = "",
         color = "Data points",
-        title = glue("3DSR output (check corridor): {df_name}")
+        title = glue("Replication DS (check corridor): {df_name}")
       )
 
 }
@@ -359,7 +359,7 @@ plot_corridor_samples <- function(nested_data, n_samples = 4) {
   # Combine plots using patchwork with a shared legend at the bottom
   combined_plot <- wrap_plots(plots, ncol = 4) +
     plot_annotation(
-      title = "3DSR output (check corridor)",
+      title = "Check corridor",
       theme = theme(
         plot.title = element_text(hjust = 0.5, size = 30),
         legend.position = "bottom",

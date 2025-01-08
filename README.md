@@ -11,7 +11,7 @@ Jörg Dollmann, DeZIM Institute and Mannheim Centre for European Social Research
 
 ## Purpose
 
-This repository contains the code for the replication of Dietrich and Sands (2023) using data from a new context and new data collection technique (3DSR, see [Goldstein et al., 2023](https://doi.org/10.1177/00491241221147495)), using 3D videos and computer vision models to estimate the effect of minoritized bystanders on pedestrian distance in Berlin, Germany.
+This repository contains the code for the replication of [Dietrich and Sands (2023)](https://doi.org/10.1038/s41562-023-01589-7) using data from a new context and new data collection technique (3DSR, see [Goldstein et al., 2023](https://doi.org/10.1177/00491241221147495)), using 3D videos and computer vision models to estimate the effect of minoritized bystanders on pedestrian distance in Berlin, Germany.
 
 
 ## Abstract
@@ -43,15 +43,15 @@ Note: Package versions listed are the ones used in development. The code should 
 
 ### Input Data Requirements
 The `data/raw/` directory should contain:
-1. CSV files with trajectory data (format: `YYYYMMDD_HHMMSS_*.csv`)
-2. `Replications_DS_metadata.xlsx` containing experimental conditions and block information
+1. CSV files with trajectory data (format: `YYYYMMDD_HHMMSS_*_centered_marked.csv`)
+2. `Replication_DS_metadata.xlsx` containing experimental conditions and block information
 
 ## Utilities
 
-The `scripts/Replications_DS_utils.R` script contains all utility functions for data processing and analysis. It will be sourced in the data processing and analysis scripts.
+The `scripts/Replication_DS_utils.R` script contains all utility functions for data processing and analysis. It will be sourced in the data processing and analysis scripts.
 
 ## Data Processing
-The data processing script (`3DSR_racial_avoidance_data processing.R`):
+The data processing script (`Replication_DS_data_processing.R`):
 1. Reads and cleans trajectory data
 2. Creates analysis corridors
 3. Calculates distances between participants and confederates
@@ -67,7 +67,7 @@ The processed data (`Replications_DS_subsamples.rds`) contains:
 
 ## Analysis Pipeline
 
-1. **Analysis** (`3DSR_racial_avoidance_analysis.R`):
+1. **Analysis** (`Replication_DS_analysis.R`):
    - Analyzes distance distributions
    - Performs regression analyses with multiple specifications
    - Creates specification curves
@@ -79,10 +79,10 @@ Results are saved in the `outputs/figures` and `outputs/tables` directories.
 ## Usage
 
 1. Clone this repository
-2. Run scripts in order:
+2. Run scripts in order in R shell:
    ```R
-   source("scripts/3DSR_racial_avoidance_data processing.R")
-   source("scripts/3DSR_racial_avoidance_analysis.R")
+   source("scripts/Replication_DS_data_processing.R")
+   source("scripts/Replication_DS_analysis.R")
    ```
 3. If you want to test the pipeline without the existing processed data and outputs, you can delete the contents of the `data/processed/`, `outputs/figures/`, and `outputs/tables/` directories.
 

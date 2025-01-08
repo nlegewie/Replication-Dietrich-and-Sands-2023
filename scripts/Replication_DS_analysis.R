@@ -1,10 +1,10 @@
 
 
-###*******************************************###
-###*******************************************###
-##### ***3DSR RACIAL AVOIDANCE: ANALYSIS*** #####
-###*******************************************###
-###*******************************************###
+###************************************###
+###************************************###
+##### ***REPLICATION DS: ANALYSIS*** #####
+###************************************###
+###************************************###
 
 ###******************************###
 ##### ***SET UP WORK SPACE *** #####
@@ -46,7 +46,7 @@ conflict_prefer("slice", "dplyr")
 ##### SOURCE HELPER FUNCTIONS #####
 ###*****************************###
 
-source(here("scripts", "Replications_DS_utils.R"))
+source(here("scripts", "Replication_DS_utils.R"))
 
 
 ###*********************###
@@ -62,7 +62,7 @@ path_output_tables <- here("outputs", "tables")
 ##### LOAD DATA #####
 ###***************###
 
-subsamples_df <- read_rds(file.path(path_input, "Replications_DS_subsamples.rds"))
+subsamples_df <- read_rds(file.path(path_input, "Replication_DS_subsamples.rds"))
 
 
 ###************###
@@ -135,7 +135,7 @@ set_flextable_defaults(
 #' combines them into a multi-panel plot
 #'
 #' @details
-#'   - Uses create_dist_plot() from 3DSR_racial_avoidance_utils.R
+#'   - Uses create_dist_plot() from Replication_DS_utils.R
 #'   - Creates histogram for each subsample
 #'   - Combines plots using patchwork::wrap_plots()
 #'   - Saves as PDF
@@ -145,7 +145,7 @@ dist_plots <- map(subsamples_df$data, create_dist_plot)
 wrap_plots(dist_plots, ncol = 5)
 
   # Save with appropriate filename
-ggsave("3DSR output_distance_distribution.pdf",
+ggsave("Replication_DS_distance_distribution.pdf",
        path = path_output_figures,
        device = cairo_pdf,
        width = 16,
@@ -178,7 +178,7 @@ ggsave("3DSR output_distance_distribution.pdf",
 #'     2. Cluster-robust SE with covariates (CTE)
 #'     3. Wild bootstrap without covariates (ATE)
 #'     4. Wild bootstrap with covariates (CTE)
-#'   - Uses functions from 3DSR_racial_avoidance_utils.R:
+#'   - Uses functions from Replication_DS_utils.R:
 #'     * perform_ate_analysis_cluster_robust()
 #'     * perform_ate_analysis_wild_block_bootstrap()
 #'   - Results stored in nested dataframes for each location/subset
@@ -311,7 +311,7 @@ df_summary <- bind_rows(
 #' for each location subset
 #'
 #' @details
-#'   - Uses extract_regression_results() from 3DSR_racial_avoidance_utils.R
+#'   - Uses extract_regression_results() from Replication_DS_utils.R
 #'   - Creates formatted results for:
 #'     * All locations combined
 #'     * Individual locations:
@@ -348,7 +348,7 @@ extracted_results_commercial <- extract_regression_results(results_commercial)
 #' Produces figures 2, 3A, 3B, A.1A, A.1B, and A.1C
 #'
 #' @details
-#'   - Uses create_specification_curve() from 3DSR_racial_avoidance_utils.R
+#'   - Uses create_specification_curve() from Replication_DS_utils.R
 #'   - Creates separate plots for:
 #'     * All locations
 #'     * Each individual location

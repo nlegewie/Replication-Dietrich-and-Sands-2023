@@ -1,10 +1,10 @@
 
 
-###**************************************************###
-###**************************************************###
-##### ***3DSR RACIAL AVOIDANCE: DADA PROCESSING*** #####
-###**************************************************###
-###**************************************************###
+###*******************************************###
+###*******************************************###
+##### ***REPLICATION DS: DATA PROCESSING*** #####
+###*******************************************###
+###*******************************************###
 
 ###******************************###
 ##### ***SET UP WORK SPACE *** #####
@@ -43,7 +43,7 @@ conflict_prefer("slice", "dplyr")
 ##### SOURCE HELPER FUNCTIONS #####
 ###*****************************###
 
-source(here("scripts", "Replications_DS_utils.R"))
+source(here("scripts", "Replication_DS_utils.R"))
 
 
 ###*********************###
@@ -186,7 +186,7 @@ nested_dfs_location <- nested_dfs_names_cleaned %>%
 #'   - Reads in experimental condition data from Excel file
 #'   - Selects relevant columns: df_name, exp_condition, block_position, block_id, sub_block_id
 
-condition_data <- read_excel(glue("{path_input}/Replications_DS_metadata.xlsx")) %>%
+condition_data <- read_excel(glue("{path_input}/Replication_DS_metadata.xlsx")) %>%
   select(df_name = CSV_Name, exp_condition = Experimental_Condition, block_position, block_id, sub_block_id)
 
 
@@ -300,7 +300,7 @@ nested_dfs_conf_coords <- nested_dfs_lm %>%
 #' intersect with participant trajectory regression lines
 #'
 #' @details
-#'   - Uses calculate_perpendicular_line() from 3DSR_racial_avoidance_utils.R
+#'   - Uses calculate_perpendicular_line() from Replication_DS_utils.R
 #'   - For each video:
 #'     * Takes participant trajectory linear model
 #'     * Takes confederate median position
@@ -319,7 +319,7 @@ nested_dfs_perp_lines <- nested_dfs_conf_coords %>%
 #' @description Defines rectangular corridors for analyzing participant trajectories
 #'
 #' @details
-#'   - Uses calculate_corridor_corners() from 3DSR_racial_avoidance_utils.R
+#'   - Uses calculate_corridor_corners() from Replication_DS_utils.R
 #'   - For each video:
 #'     * Takes participant data, confederate data, linear model, and perpendicular line
 #'     * Returns coordinates of corridor corners (bottom-left, top-left, top-right, bottom-right)
@@ -340,7 +340,7 @@ nested_dfs_corridor <- nested_dfs_perp_lines %>%
 #' the defined analysis corridors. Creates a new nested column 'corridor_data'.
 #'
 #' @details
-#'   - Uses filter_participants_in_corridor() from 3DSR_racial_avoidance_utils.R
+#'   - Uses filter_participants_in_corridor() from Replication_DS_utils.R
 #'   - For each video:
 #'     * Takes participant positions and corridor definition
 #'     * Returns only positions that fall within corridor boundaries
@@ -359,7 +359,7 @@ nested_dfs_in_corridor <- nested_dfs_corridor %>%
 #' @description Adds corridor membership indicator to full dataset
 #'
 #' @details
-#'   - Uses check_corridor_membership() from 3DSR_racial_avoidance_utils.R
+#'   - Uses check_corridor_membership() from Replication_DS_utils.R
 #'   - For each video:
 #'     * Takes full dataset, participant data, and corridor definition
 #'     * Adds 'in_corridor' column ("yes"/"no") to all positions
@@ -377,7 +377,7 @@ nested_dfs_check_corridor <- nested_dfs_in_corridor %>%
 #' @description Creates plots for visual inspection of corridor analysis. Produced figure is not included in main report.
 #'
 #' @details
-#'   - Uses plot_corridor_check() and plot_corridor_samples() from 3DSR_racial_avoidance_utils.R
+#'   - Uses plot_corridor_check() and plot_corridor_samples() from Replication_DS_utils.R
 #'     * Creates multi-panel plot of random samples
 #'   - Shows:
 #'     * Corridor boundaries
@@ -399,7 +399,7 @@ plot_corridor_samples(nested_dfs_check_corridor)
 #' @description Generates and saves a visualization an example of the corridor analysis approach. Produces figure 1.
 #'
 #' @details
-#'   - Uses plot_corridor_check() from 3DSR_racial_avoidance_utils.R
+#'   - Uses plot_corridor_check() from Replication_DS_utils.R
 #'   - Creates plot showing:
 #'     * Corridor boundaries
 #'     * Participant trajectories (colored by corridor membership)
@@ -432,7 +432,7 @@ ggsave("Replication_DS_figure 1.png",
 #' @description Computes minimum distances for all in-corridor positions
 #'
 #' @details
-#'   - Uses calculate_distances() from 3DSR_racial_avoidance_utils.R
+#'   - Uses calculate_distances() from Replication_DS_utils.R
 #'   - For each video:
 #'     * Takes participant and confederate positions
 #'     * Returns minimum distance to any confederate for each participant position within the corresponding frame
@@ -465,7 +465,7 @@ nested_dfs_corridor_distance <- nested_dfs_check_corridor %>%
 #' @description Performs detailed validation of distance calculations and checks results
 #'
 #' @details
-#'   - Uses validate_distance_calculations() and add_distance_validation() from 3DSR_racial_avoidance_utils.R
+#'   - Uses validate_distance_calculations() and add_distance_validation() from Replication_DS_utils.R
 #'     * Computes distances to each confederate separately
 #'     * Identifies which confederate is closer
 #'     * Verifies that minimum distance matches closer confederate
@@ -607,6 +607,6 @@ nested_dfs_corridor_distance %>%
 
 #' @description Saves to RDS containing processed data
 
-write_rds(subsamples_df, file.path(path_output_data, "Replications_DS_subsamples.rds"))
+write_rds(subsamples_df, file.path(path_output_data, "Replication_DS_subsamples.rds"))
 
 
