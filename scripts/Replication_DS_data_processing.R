@@ -512,13 +512,13 @@ subsamples_df <- tibble(sample_no = 1:50, data = map(1:50, ~ nested_dfs_corridor
   sample_n(3000)))
 
 
-###********************************************###
+###******************************************** ###
 ##### TABLE: NUMBER OF OBS IN EACH CONDITION #####
-###********************************************###
+###******************************************** ###
 
-###*******************************###
+###******************************* ###
 ##### By experimental condition #####
-###*******************************###
+###******************************* ###
 
 #' @description Generates and saves a table showing the number of observations
 #' in each experimental condition

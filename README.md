@@ -95,4 +95,4 @@ A link to our replication report will be added here when available.
 
 ## Contact
 
-For comments or questions, please contact: Nicolas Legewie at: nicolas (dot) legewie (at) uni-erfurt (dot) de
+For comments or questions, please contact Nicolas Legewie at: nicolas (dot) legewie (at) uni-erfurt (dot) de

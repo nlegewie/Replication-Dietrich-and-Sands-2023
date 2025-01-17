@@ -529,6 +529,7 @@ results_summary %>%
   ) %>%
   bold(part = "header") %>%
   autofit() %>%
+  set_doc_properties(orientation = "landscape") %>%
   save_as_docx(path = file.path(path_output_tables, "Replication_DS_table 3.docx"))
 
 ##### Table A1: All locations and specific locations #####
@@ -570,4 +571,5 @@ results_summary %>%
   ) %>%
   bold(part = "header") %>%
   autofit() %>%
+  set_doc_properties(orientation = "landscape") %>%
   save_as_docx(path = file.path(path_output_tables, "Replication_DS_table A1.docx"))
