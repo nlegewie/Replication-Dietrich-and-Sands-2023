@@ -2,7 +2,7 @@
 
 ## Authors
 
-Nicolas Legewie, University of Erfurt (corresponding author)  
+Nicolas Legewie, University of Münster (corresponding author)  
 Doron Shiffer-Sebba, Northwestern University  
 Jannes Jacobsen, DeZIM Institute  
 Yoav Goldstein, Independent Researcher  
