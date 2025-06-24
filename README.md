@@ -72,7 +72,6 @@ The processed data (`Replications_DS_subsamples.rds`) contains:
    - Performs regression analyses with multiple specifications
    - Creates specification curves
    - Generates summary tables
-   - Creates additional plots (not used in replication report)
 
 Results are saved in the `outputs/figures` and `outputs/tables` directories.
 
